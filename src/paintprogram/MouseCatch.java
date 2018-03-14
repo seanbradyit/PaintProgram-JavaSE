@@ -10,6 +10,8 @@ import java.awt.event.MouseListener;
 import static java.lang.System.out;
 import paintprogram.PaintProgram.DrawPlane.Line;
 import static paintprogram.PaintProgram.linedraw;
+import paintprogram.PaintProgram.DrawPlane.Rect;
+import static paintprogram.PaintProgram.rectdraw;
 import static paintprogram.PaintProgram.startX;
 import static paintprogram.PaintProgram.startY;
 import static paintprogram.PaintProgram.prevX;

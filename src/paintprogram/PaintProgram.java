@@ -18,6 +18,7 @@ import java.util.LinkedList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
+import static javax.swing.WindowConstants.DISPOSE_ON_CLOSE;
 
 /**
  *
@@ -25,10 +26,12 @@ import javax.imageio.ImageIO;
  */
 public class PaintProgram{
     
-    public static LinkedList<DrawPlane.Line> lineslist = new LinkedList<DrawPlane.Line>();
+    public static LinkedList<DrawPlane.Line> lineslist = new LinkedList<>();
+    public static LinkedList<DrawPlane.Rect> rectlist = new LinkedList<>();
     
     static int startX = 0, startY = 0, prevX = 0, prevY = 0, tempX = 0, tempY = 0;
-    static boolean linedraw = true;
+    static boolean linedraw = false;
+    static boolean rectdraw = true;
     
     static boolean export = false;
     
@@ -77,6 +80,13 @@ public class PaintProgram{
                 //g.drawLine(prevX, prevY, startX, startY);
             }
             
+            if(true==rectdraw){
+                for (Rect rect : rectlist) {
+                    g.drawRect(rect.lastX, rect.lastY, rect.nextX, rect.nextY);
+                    //g.drawRect(50, 100, 150, 200);
+                    repaint();
+                }
+            }
             
              
             repaint();
@@ -94,6 +104,21 @@ public class PaintProgram{
 
             public void add(Line n) {
                 lineslist.add(n);        
+            }
+        }
+        // https://stackoverflow.com/questions/26638620/java-add-rectangles-to-arraylist-and-then-draw-them ?
+        public static class Rect{
+            int lastX, lastY, nextX, nextY;
+
+            public Rect(){
+                this.lastX = prevX;
+                this.lastY = prevY;
+                this.nextX = startX;
+                this.nextY = startY;
+            }
+
+            public void add(Rect n) {
+                rectlist.add(n);        
             }
         }
         
@@ -158,7 +183,8 @@ public class PaintProgram{
             @Override
             public void actionPerformed(ActionEvent e) {
                 out.println("This brush you have selected is the Pencil Brush");
-                linedraw=!linedraw;
+                //linedraw=!linedraw;
+                rectdraw=!rectdraw;
             }
     }
     
@@ -184,6 +210,7 @@ public class PaintProgram{
             public void actionPerformed(ActionEvent e) {
                 out.println("This brush you have selected is the Clear Brush");
                 lineslist.clear();
+                rectlist.clear();
             }
     }
     
@@ -261,6 +288,7 @@ public class PaintProgram{
             window.setSize(800,600);
             window.setLocation(100,100);
             window.setVisible(true);
+            window.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 
     }
 }
